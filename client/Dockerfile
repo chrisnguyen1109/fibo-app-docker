@@ -16,9 +16,7 @@ RUN yarn
 
 COPY --chown=node:node . ./
 
-EXPOSE 3000
-
-CMD [ "yarn", "start" ]
+CMD [ "yarn", "build" ]
 
 FROM nginx
 
