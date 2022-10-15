@@ -1,0 +1,62 @@
+version: '3.8'
+services:
+  redis:
+    image: redis
+    restart: always
+    ports:
+      - 6380:6379
+    volumes:
+      - redis:/data
+  postgres:
+    image: postgres:14
+    restart: always
+    ports:
+      - 5434:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_DB: fibonacci-app
+    volumes:
+      - postgres:/var/lib/postgresql/data
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile.dev
+    restart: always
+    ports:
+      - 8080:80
+    depends_on:
+      - client
+  redis-worker:
+    build:
+      context: ./redis-sub-worker
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/node/app/node_modules
+      - ./redis-sub-worker:/home/node/app
+    depends_on:
+      - redis   
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/node/app/node_modules
+      - ./server:/home/node/app
+    depends_on:
+      - redis
+      - postgres
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /home/node/app/node_modules
+      - ./client:/home/node/app
+    environment:
+      - WDS_SOCKET_PORT=0
+    depends_on:
+      - api
+volumes:
+  postgres:
+  redis:

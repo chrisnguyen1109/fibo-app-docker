@@ -1,0 +1,19 @@
+{
+    "name": "redis-sub-worker",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "scripts": {
+        "dev": "nodemon -L",
+        "build": "tsc",
+        "start": "node dist/subcriber.js"
+    },
+    "dependencies": {
+        "redis": "^4.3.1"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.20",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.8.4"
+    }
+}
