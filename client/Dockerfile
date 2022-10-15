@@ -16,7 +16,7 @@ RUN yarn
 
 COPY --chown=node:node . ./
 
-CMD [ "yarn", "build" ]
+RUN yarn build
 
 FROM nginx
 
