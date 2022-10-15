@@ -1,15 +1,16 @@
+import 'dotenv/config';
 import { createClient } from 'redis';
 
 const client = createClient({
-    url: 'redis://default:default@redis:6379',
+    url: `redis://default:default@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
 });
 const subscriber = client.duplicate();
 
 const fibonacci = async (index: number): Promise<number> => {
     if (index < 2) return 1;
 
-    const value = +(await client.get(index.toString()));
-    if (value) return value;
+    const value = await client.get(index.toString());
+    if (value) return +value;
 
     const res = (await fibonacci(index - 1)) + (await fibonacci(index - 2));
     await client.set(index.toString(), res);

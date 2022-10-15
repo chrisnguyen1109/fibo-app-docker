@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  nginx:
+    image: chrisnguyen99/fibo-app-nginx
+    mem_limit: 128m
+    hostname: nginx    
+    ports:
+      - 80:80
+  worker:
+    image: chrisnguyen99/fibo-app-worder
+    mem_limit: 128m
+    hostname: worker
+    environment:
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT    
+  api:
+    image: chrisnguyen99/fibo-app-server
+    hostname: api
+    environment:
+      - REDIS_HOST=$REDIS_HOST
+      - REDIS_PORT=$REDIS_PORT
+      - PGUSER=$PGUSER
+      - PGHOST=$PGHOST
+      - PGDATABASE=$PGDATABASE
+      - PGPASSWORD=$PGPASSWORD
+      - PGPORT=$PGPORT    
+  client:
+    image: chrisnguyen99/fibo-app-client
+    mem_limit: 128m
+    hostname: client

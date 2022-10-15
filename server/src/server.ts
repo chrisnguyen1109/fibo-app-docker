@@ -26,7 +26,7 @@ pool.connect((err, client, release) => {
 });
 
 const client = createClient({
-    url: 'redis://default:default@redis:6379',
+    url: `redis://default:default@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
 });
 const subscriber = client.duplicate();
 
@@ -116,9 +116,7 @@ const boostrap = async () => {
         res.json({ message: 'Working' });
     });
 
-    app.listen(process.env.PORT, () =>
-        console.log(`Listening server on port ${process.env.PORT}`)
-    );
+    app.listen(3001, () => console.log(`Listening server on port ${3001}`));
 };
 
 boostrap();
